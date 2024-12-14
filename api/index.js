@@ -124,7 +124,14 @@ app.get('/api/leads/:employeeId', async (req, res) => {
     }
 });
 
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+
+app.use(cors({
+    origin: ['https://lead-app-three.vercel.app', 'http://localhost:3000'],
+    methods: ['GET', 'POST'],
+    credentials: true
+}));
