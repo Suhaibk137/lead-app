@@ -1,7 +1,11 @@
-// Load employees into dropdown
+// Change all fetch URLs from absolute to relative
+
+const API_URL = ''; // Will be empty for same-domain requests
+
+// Load employees function
 async function loadEmployees() {
     try {
-        const response = await fetch('http://localhost:3000/api/employees');
+        const response = await fetch(`${API_URL}/api/employees`);
         const employees = await response.json();
         
         const employeeSelect = document.getElementById('employee');
@@ -19,42 +23,6 @@ async function loadEmployees() {
     }
 }
 
-// Format date to local time
-function formatDate(dateString) {
-    const date = new Date(dateString);
-    if (isNaN(date.getTime())) {
-        return 'N/A';
-    }
-    return date.toLocaleTimeString('en-US', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true
-    });
-}
-
-// Load leads for selected employee
-async function loadLeads(employeeId) {
-    try {
-        const response = await fetch(`http://localhost:3000/api/leads/${employeeId}`);
-        const leads = await response.json();
-        
-        const tbody = document.getElementById('leadsTableBody');
-        tbody.innerHTML = '';
-        
-        leads.forEach(lead => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${formatDate(lead.date)}</td>
-                <td>${lead.contactName || '-'}</td>
-                <td>${lead.contactNumber}</td>
-            `;
-            tbody.appendChild(row);
-        });
-    } catch (error) {
-        console.error('Error loading leads:', error);
-    }
-}
-
 // Handle form submission
 document.getElementById('leadForm').addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -69,7 +37,7 @@ document.getElementById('leadForm').addEventListener('submit', async (e) => {
     }
     
     try {
-        const response = await fetch('http://localhost:3000/api/leads', {
+        const response = await fetch(`${API_URL}/api/leads`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -89,7 +57,6 @@ document.getElementById('leadForm').addEventListener('submit', async (e) => {
             // Reload leads
             loadLeads(employeeId);
             
-            // Show success message
             alert('Lead saved successfully!');
         } else {
             alert('Error saving lead. Please try again.');
@@ -100,15 +67,25 @@ document.getElementById('leadForm').addEventListener('submit', async (e) => {
     }
 });
 
-// Load leads when employee is selected
-document.getElementById('employee').addEventListener('change', (e) => {
-    const employeeId = e.target.value;
-    if (employeeId) {
-        loadLeads(employeeId);
-    } else {
-        document.getElementById('leadsTableBody').innerHTML = '';
+// Load leads function
+async function loadLeads(employeeId) {
+    try {
+        const response = await fetch(`${API_URL}/api/leads/${employeeId}`);
+        const leads = await response.json();
+        
+        const tbody = document.getElementById('leadsTableBody');
+        tbody.innerHTML = '';
+        
+        leads.forEach(lead => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${formatDate(lead.date)}</td>
+                <td>${lead.contactName || '-'}</td>
+                <td>${lead.contactNumber}</td>
+            `;
+            tbody.appendChild(row);
+        });
+    } catch (error) {
+        console.error('Error loading leads:', error);
     }
-});
-
-// Initial load of employees
-document.addEventListener('DOMContentLoaded', loadEmployees);
+}
