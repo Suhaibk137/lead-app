@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Resumes - Employee Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="company-name">Elite Resumes</div>
+            <div>Employee Dashboard</div>
+        </div>
+
+        <div class="lead-form">
+            <form id="leadForm">
+                <div class="form-group">
+                    <label for="employee">Select Employee</label>
+                    <select id="employee" required>
+                        <option value="">Choose employee...</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="contactName">Contact Name</label>
+                    <input type="text" id="contactName" placeholder="Enter contact name (optional)">
+                </div>
+
+                <div class="form-group">
+                    <label for="contactNumber">Contact Number <span class="required">*</span></label>
+                    <input type="tel" id="contactNumber" placeholder="Enter contact number" required>
+                </div>
+
+                <button type="submit" class="submit-btn">Save Lead</button>
+            </form>
+        </div>
+
+        <div class="leads-table">
+            <div class="table-title">Today's Leads</div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Name</th>
+                            <th>Number</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leadsTableBody">
+                        <!-- Leads will be dynamically added here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="js/script.js"></script>
+</body>
+</html>
